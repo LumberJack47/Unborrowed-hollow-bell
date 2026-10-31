@@ -1,0 +1,110 @@
+# Unborrowed — The Hollow Bell
+
+A playable browser adventure with an in-world, context-aware transaction review assistant.
+
+The player is a courier exploring Mosswake, a village whose bell has lost its voice. Exploration, conversations, discoveries, and decisions unlock four connected environments and two endings. An optional encounter with Orrin, the village archivist, helps the player review real transaction files.
+
+## Chosen vertical and persona
+
+**Implementation vertical: personal finance — transaction review and expense organization.**
+
+The assistant persona is **Orrin, the village archivist**. Orrin helps a person turn an unorganized transaction export into a reviewed CSV by suggesting categories, identifying possible duplicates, and highlighting possible recurring payments. The adventure provides the setting; the archive performs the practical work.
+
+The challenge's official list of verticals was not supplied. This label describes the implemented functionality and is not a claim that it matches an officially approved vertical. The current product primarily presents an adventure game, so its suitability for an assistant-focused challenge depends on the supplied problem statement.
+
+## Approach and logic
+
+The project uses explicit, inspectable rules rather than an external language model. No API key or paid service is required.
+
+- **Context-aware dialogue:** available interactions depend on location, discoveries, abilities, inventory, relationship choices, and story progress.
+- **Progression:** a listening lantern reveals a hidden passage; a dash ability crosses a broken bridge; a recovered bell tongue unlocks the final story sequence.
+- **Category suggestions:** merchant-name patterns suggest an expense category. Unrecognized descriptions fall back to `Other` for the user to review.
+- **Possible duplicates:** matching date text, normalized merchant, amount, and currency flag a record for review. The player decides whether to keep or exclude it.
+- **Recurring hints:** repeated merchant, amount, and currency combinations are checked for weekly or monthly date intervals. These remain suggestions.
+- **User control:** decisions can be undone, and original transaction columns are retained in exports.
+
+## How the solution works
+
+1. Start a new journey and move around the village with the keyboard.
+2. Talk to characters, make dialogue choices, discover items, and unlock new routes.
+3. Visit Orrin's archive to import a transaction CSV or TSV from your device.
+4. Review suggested categories and possible duplicates through the archive interaction.
+5. Download reviewed transactions, excluded records, and a decision log. Export before closing the tab: working transaction records are held in memory.
+6. Continue the adventure to either ending. Story progress autosaves locally and can also be exported and restored as JSON.
+
+The archive is optional; completing either story ending does not require a transaction file.
+
+## Run locally
+
+Use a modern browser and a current Node.js version supporting ES modules and the built-in test runner. There are no third-party package dependencies to install.
+
+```sh
+npm start
+```
+
+Open `http://localhost:4173` from the repository root.
+
+```sh
+npm test
+npm run build:offline
+```
+
+The build command creates `dist/offline.html`, a standalone game containing the runtime, font, artwork, and generated audio.
+
+## Controls
+
+| Input | Action |
+| --- | --- |
+| WASD / arrow keys | Move |
+| E / Enter | Interact or advance dialogue |
+| Up / Down, then E / Enter | Choose a dialogue response |
+| L | Toggle the lantern after acquiring it |
+| Shift + direction | Dash after acquiring the ability |
+| I | Open the satchel |
+| Escape | Close dialogue or toggle pause |
+| M | Toggle ambient audio |
+
+## Code structure
+
+| File | Responsibility |
+| --- | --- |
+| `dist/game/world.js` | Maps, movement, collision, transitions, discoveries, save validation |
+| `dist/game/story.js` | Dialogue, choices, relationships, items, endings |
+| `dist/game/render.js` | Canvas pixel artwork, world animation, lighting |
+| `dist/game/main.js` | Input, game loop, interface, saves, archive integration |
+| `dist/game/audio.js` | Generated ambient music and effects |
+| `dist/game/ledger.js` | In-world transaction review interaction |
+| `dist/engine.js` | File parsing, category suggestions, duplicate analysis, CSV exports |
+| `tests/` | Automated game and transaction-engine checks |
+| `server.mjs` | Local static preview server |
+| `build-offline.mjs` | Standalone HTML generation |
+
+## Security and privacy
+
+Transaction processing happens in the browser. Imported source files are not uploaded, and ledger contents are excluded from story saves. CSV parsing validates headers and row structure and limits each import to 10,000 transactions. CSV exports escape cells and guard against common spreadsheet formula-injection prefixes.
+
+Story saves use browser-local storage and are not encrypted. The local preview server binds to the loopback interface. There are no account credentials or external AI service secrets to configure.
+
+## Efficiency and accessibility
+
+Canvas rendering uses cached terrain, and the application has no runtime package dependencies or remote media requests. Keyboard controls cover movement, interactions, and dialogue choices; touch controls and mouse-selectable dialogue choices are also available. Audio is optional and starts only after user activation.
+
+The canvas-based world has limited screen-reader accessibility. This version does not claim full accessibility compliance.
+
+## Testing
+
+The existing verification records **26 passing automated tests**, covering movement, collision, dash behavior, hidden passage gating, story choices, both endings, saved state, corrupt-save recovery, CSV validation, and exports. Run `npm test` to reproduce the automated checks.
+
+Recorded browser testing completed both endings through game controls, checked save/reload and JSON checkpoint restoration, and reviewed a real three-row CSV with downloaded reviewed and excluded outputs. The standalone build was tested through local HTTP; direct `file://` execution was not verified by browser automation.
+
+## Assumptions and scope
+
+- Transaction imports need distinct date, description/merchant, and amount columns. Currency is optional and defaults to USD when absent.
+- Reliable recurring-payment analysis needs supported year-first dates. Category suggestions and recurring hints are heuristics, not financial advice or guaranteed classifications.
+- Progress is local to the current browser and origin unless exported. There is no cloud synchronization.
+- The adventure is a small, complete vertical slice. Combat, mining, crafting, procedural worlds, and multiplayer are outside its scope.
+- This README does not establish GitHub repository visibility, branch count, submission attempts, or total repository size. Those submission conditions must be satisfied in the actual repository.
+
+## Assets
+
+Pixel artwork and audio are generated by the included code. The bundled VT323 font is distributed under the SIL Open Font License; see `dist/fonts/VT323-OFL.txt`.
