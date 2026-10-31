@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101b22"><meta name="description" content="Unborrowed: a small pixel adventure about a silent bell, a hidden stair, and a voice that belongs to itself.">
+  <title>Unborrowed — The Hollow Bell</title>
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml"><link rel="stylesheet" href="/game.css">
+</head>
+<body>
+  <main id="game-shell" aria-label="Unborrowed adventure game">
+    <div id="stage">
+      <canvas id="world" width="640" height="360" tabindex="0" role="application" aria-label="Unborrowed world. Move with WASD or arrow keys. E to interact, L for the lantern, Shift to dash, I for your bag, Escape to pause." aria-describedby="world-status"></canvas>
+      <div id="vignette" aria-hidden="true"></div><div id="fade" aria-hidden="true"></div>
+      <section id="title-screen" class="screen-layer" aria-label="Unborrowed title screen">
+        <div class="title-kicker">A SMALL LIGHT IN A STRANGE PLACE</div><h1>UNBORROWED</h1><div class="title-subtitle"><span></span> THE HOLLOW BELL <span></span></div>
+        <p>Some things wake when you stop to listen.</p>
+        <div id="title-buttons"><button id="continue-game" hidden>Continue your story <span>↗</span></button><button id="new-game">Begin the story <span>→</span></button></div>
+        <div class="title-bottom"><span>WASD / ARROWS to wander · E to listen</span><button id="title-sound" aria-pressed="false">Sound: off <span>M</span></button></div>
+      </section>
+      <div id="hud" hidden><div id="place-label"><span id="place-name">Mosswake</span><small id="place-subtitle">A village between the rain and the roots</small></div><div class="hud-tools"><button id="lantern-button" title="Lantern · L" aria-label="Toggle lantern" hidden>♧ <small>L</small></button><button id="bag-button" title="Bag · I" aria-label="Open satchel">▣ <small>I</small></button><button id="sound-button" aria-label="Toggle ambient sound" aria-pressed="false">♪</button><button id="pause-button" aria-label="Pause game">Ⅱ</button></div></div>
+      <div id="area-banner" aria-hidden="true"><small>YOU HAVE ARRIVED</small><span></span></div>
+      <div id="interaction-prompt" hidden><kbd>E</kbd><span></span></div>
+      <div id="toast" role="status" aria-live="polite"></div><div id="save-indicator" aria-live="polite"></div>
+      <section id="dialogue" hidden aria-label="Conversation"><img id="dialogue-portrait" alt=""><div id="dialogue-body"><div id="speaker"></div><p id="dialogue-text" aria-hidden="true"></p><p id="dialogue-accessible" class="sr-only" aria-live="polite"></p><div id="dialogue-choices"></div><button id="advance-dialogue" aria-label="Continue dialogue"><kbd>E</kbd><span>Continue ▾</span></button></div></section>
+      <section id="ending-screen" class="screen-layer" hidden aria-label="Story ending"></section>
+      <div id="touch-controls" aria-label="Touch controls"><div class="dpad"><button data-walk="up" aria-label="Walk north">↑</button><button data-walk="left" aria-label="Walk west">←</button><button data-walk="down" aria-label="Walk south">↓</button><button data-walk="right" aria-label="Walk east">→</button></div><div class="touch-actions"><button id="touch-dash" aria-label="Dash">⇢</button><button id="touch-interact" aria-label="Interact">E</button></div></div>
+    </div>
+    <div id="controls-legend"><span><b>WASD / ↑↓←→</b> Wander <i>·</i> <b>E</b> Listen <i>·</i> <b>L</b> Lantern <i>·</i> <b>Shift</b> Mossstep <i>·</i> <b>I</b> Satchel</span><button id="fullscreen-button">Full screen ↗</button></div>
+    <p id="world-status" class="sr-only" role="status" aria-live="polite"></p>
+  </main>
+  <dialog id="pause-menu"><div class="menu-top"><span>UNBORROWED</span><button data-close aria-label="Close menu">×</button></div><h2>Stay a little.</h2><p>Your discoveries and choices are saved in this browser.</p><div class="menu-options"><button data-menu="resume">Return to the path <span>Esc</span></button><button data-menu="bag">Look in your satchel <span>I</span></button><button data-menu="save-copy">Save a copy of your story <span>↓</span></button><button data-menu="load-copy">Open a saved story <span>↑</span></button><button data-menu="controls">Read the field notes <span>?</span></button><button data-menu="title">Return to the title</button></div></dialog>
+  <dialog id="bag-menu"><div class="menu-top"><span>YOUR SATCHEL</span><button data-close aria-label="Close satchel">×</button></div><h2>Things you carry.</h2><div id="bag-items"></div><p class="bag-note">Some things are useful. Others are worth carrying anyway.</p></dialog>
+  <dialog id="notes-menu"><div class="menu-top"><span>FIELD NOTES</span><button data-close aria-label="Close field notes">×</button></div><h2>Walk. Notice. Listen.</h2><p><b>WASD or arrows</b> move. <b>E or Enter</b> talks, examines, and advances a conversation. Use arrows and Enter to choose an answer, or click it.</p><p><b>L</b> lights the lantern once Brin has lent it to you. Light can reveal a path the roots conceal.</p><p><b>Shift</b> dashes after Tove teaches you the mossstep. Walk close to the gap on the bridge, face across it, hold a direction, and tap Shift. Deep water is still impassable.</p><p><b>I</b> opens your satchel. <b>Escape</b> pauses. <b>M</b> toggles the original ambient score. Your story autosaves locally. There is no combat and no timer.</p><p class="notes-small">The optional archive ledger is held only in this tab and is never included in a story save. Download it before closing.</p></dialog>
+  <input id="ledger-input" type="file" accept=".csv,.tsv,text/csv" hidden><input id="story-input" type="file" accept=".json,application/json" hidden>
+  <script type="module" src="/game/main.js"></script>
+</body>
+</html>
