@@ -1,0 +1,62 @@
+{
+  "audits": [
+    {
+      "label": "title",
+      "violations": [],
+      "passes": 24,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "label": "text exploration",
+      "violations": [],
+      "passes": 23,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "label": "conversation choices",
+      "violations": [],
+      "passes": 23,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "label": "ending",
+      "violations": [],
+      "passes": 22,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "label": "pause dialog",
+      "violations": [],
+      "passes": 13,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "label": "field notes",
+      "violations": [],
+      "passes": 13,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "label": "320px readable large text",
+      "violations": [],
+      "passes": 24,
+      "incomplete": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "errors": [],
+  "overflow": false
+}
